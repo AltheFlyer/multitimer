@@ -7,15 +7,13 @@ type TimerData = {
 	startTimestamp: number;
 };
 
-type AppData = {
-	timers: TimerData[];
-};
-
 function App() {
 	const [timers, setTimes] = useState<TimerData[]>(loadTimers());
 	const [nameInput, setNameInput] = useState<string>("");
-  const [now, setNow] = useState<number>(Date.now());
-  useInterval(() => {setNow(Date.now())}, 1000);
+	const [now, setNow] = useState<number>(Date.now());
+	useInterval(() => {
+		setNow(Date.now());
+	}, 1000);
 
 	function addTimer() {
 		const newTimes = [
@@ -54,14 +52,14 @@ function App() {
 				<Timer
 					key={index}
 					name={timer.name}
-          startTimestamp={timer.startTimestamp}
+					startTimestamp={timer.startTimestamp}
 					onRemove={() => {
 						removeTimer(index);
 					}}
 					onReset={() => {
 						resetTimer(index);
 					}}
-          now={now}
+					now={now}
 				/>
 			))}
 			<hr></hr>
@@ -92,23 +90,23 @@ function loadTimers(): TimerData[] {
 
 // I'm copying the useInterval hook from https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 function useInterval(callback: () => void, delay: number) {
-  const savedCallback = useRef(callback);
- 
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
- 
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
+	const savedCallback = useRef(callback);
+
+	// Remember the latest callback.
+	useEffect(() => {
+		savedCallback.current = callback;
+	}, [callback]);
+
+	// Set up the interval.
+	useEffect(() => {
+		function tick() {
+			savedCallback.current();
+		}
+		if (delay !== null) {
+			let id = setInterval(tick, delay);
+			return () => clearInterval(id);
+		}
+	}, [delay]);
 }
 
 export default App;
